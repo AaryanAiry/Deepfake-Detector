@@ -3,6 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.models.detector import DeepfakeDetector
 import shutil
 from pathlib import Path
+import mimetypes
+
+# import your video analyzer
+from app.models.analyze_video import analyze_video  
 
 app = FastAPI()
 detector = DeepfakeDetector()
@@ -24,5 +28,27 @@ async def predict(file: UploadFile = File(...)):
     with open(file_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
 
-    result = detector.predict(str(file_path))
-    return {"prediction": result["prediction"], "confidence": result["confidence"]}
+    mime_type, _ = mimetypes.guess_type(file.filename)
+
+    # Image prediction
+    if mime_type and mime_type.startswith("image"):
+        result = detector.predict(str(file_path))
+        return {
+            "type": "image",
+            "prediction": result["prediction"],
+            "confidence": result["confidence"],
+        }
+
+    # Video prediction
+    elif mime_type and mime_type.startswith("video"):
+        label, confidence, mean_probs = analyze_video(str(file_path), detector)
+        return {
+            "type": "video",
+            "prediction": label,
+            "confidence": confidence,
+            "real_score": float(mean_probs["real"]),
+            "fake_score": float(mean_probs["fake"]),
+        }
+
+    else:
+        return {"error": "Unsupported file type"}

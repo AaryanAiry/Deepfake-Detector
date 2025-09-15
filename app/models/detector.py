@@ -20,7 +20,7 @@ class DeepfakeDetector:
         print("Model loaded ✅")
 
         # Labels (assumes 0=real, 1=fake)
-        self.class_names = ["fake","real"]
+        self.class_names = ["real","fake"]
 
     def predict(self, image_path: str):
         """

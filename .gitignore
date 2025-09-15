@@ -1,1 +1,52 @@
-.venv
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# ---- Virtual Environments ----
+.venv/
+venv/
+ENV/
+env/
+*.env
+
+# ---- Logs & Checkpoints ----
+*.log
+*.out
+*.err
+*.ckpt
+checkpoints/
+wandb/
+
+# ---- IDE/Editor ----
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ---- OS generated files ----
+.DS_Store
+Thumbs.db
+
+# ---- Data & Uploads ----
+data/uploads/
+Datasets/
+
+# ---- Cache ----
+*.cache/
+.cache/
+__MACOSX/
+
+# ---- Streamlit ----
+.streamlit/
+
+# ---- FastAPI uvicorn logs ----
+*.pid
+*.sqlite3
+
+# ---- Jupyter ----
+.ipynb_checkpoints/

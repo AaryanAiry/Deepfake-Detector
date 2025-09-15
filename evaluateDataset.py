@@ -57,7 +57,7 @@ def evaluate_split(dataset_root: str, split: str, num_samples: int = 50):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset_root", type=str, default="/mnt/MyLinuxSpace/Dataset", help="Path to dataset root")
+    parser.add_argument("--dataset_root", type=str, default="/Datasets", help="Path to dataset root")
     parser.add_argument("--split", type=str, choices=["Train", "Test", "Validation"], required=True, help="Which split to evaluate")
     parser.add_argument("--num_samples", type=int, default=50, help="Number of images per class to sample")
     args = parser.parse_args()
