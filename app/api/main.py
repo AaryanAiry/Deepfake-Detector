@@ -41,13 +41,14 @@ async def predict(file: UploadFile = File(...)):
 
     # Video prediction
     elif mime_type and mime_type.startswith("video"):
-        label, confidence, mean_probs = analyze_video(str(file_path), detector)
+        label, confidence, mean_probs, frames_analyzed = analyze_video(str(file_path), detector)
         return {
             "type": "video",
             "prediction": label,
             "confidence": confidence,
             "real_score": float(mean_probs["real"]),
             "fake_score": float(mean_probs["fake"]),
+            "frames_analyzed": frames_analyzed,
         }
 
     else:

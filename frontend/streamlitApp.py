@@ -5,7 +5,10 @@ import mimetypes
 
 st.title("Deepfake Detector")
 
-uploaded_file = st.file_uploader("Choose an image or video...", type=["jpg", "png", "jpeg", "mp4", "avi", "mov", "mkv"])
+uploaded_file = st.file_uploader(
+    "Choose an image or video...", 
+    type=["jpg", "png", "jpeg", "mp4", "avi", "mov", "mkv"]
+)
 
 if uploaded_file is not None:
     mime_type, _ = mimetypes.guess_type(uploaded_file.name)
@@ -34,6 +37,7 @@ if uploaded_file is not None:
                     st.info(f"Confidence: {data['confidence']:.2f}")
                     st.write(f"Avg Real Score: {data['real_score']:.2f}")
                     st.write(f"Avg Fake Score: {data['fake_score']:.2f}")
+                    st.write(f"Frames Analyzed: {data['frames_analyzed']}")
 
             else:
                 st.error(f"Prediction failed! Status code: {response.status_code}")

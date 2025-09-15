@@ -5,7 +5,7 @@ import random
 import argparse
 from app.models.detector import DeepfakeDetector
 
-def evaluate_split(dataset_root: str, split: str, num_samples: int = 50):
+def evaluate_split(dataset_root: str, split: str, num_samples: int = 500):
     """
     Evaluate the detector on a dataset split (Train/Test/Validation).
     """
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset_root", type=str, default="/Datasets", help="Path to dataset root")
     parser.add_argument("--split", type=str, choices=["Train", "Test", "Validation"], required=True, help="Which split to evaluate")
-    parser.add_argument("--num_samples", type=int, default=50, help="Number of images per class to sample")
+    parser.add_argument("--num_samples", type=int, default=500, help="Number of images per class to sample")
     args = parser.parse_args()
 
     evaluate_split(args.dataset_root, args.split, args.num_samples)

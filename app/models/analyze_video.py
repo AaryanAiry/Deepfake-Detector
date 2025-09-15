@@ -3,7 +3,7 @@ import numpy as np
 from pathlib import Path
 from PIL import Image
 
-def analyze_video(video_path, detector, frame_skip=2, max_frames=500):
+def analyze_video(video_path, detector, frame_skip=1, max_frames=5000):
     """
     Analyze a video by sampling frames and passing them through the deepfake detector.
     Args:
@@ -15,12 +15,14 @@ def analyze_video(video_path, detector, frame_skip=2, max_frames=500):
         final_label: "real" or "fake"
         confidence: float
         mean_probs: dict with real/fake avg scores
+        total_frames_analyzed: int
     """
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
         raise ValueError(f"Could not open video: {video_path}")
 
     frame_count = 0
+    analyzed_frames = 0
     results = []
 
     while True:
@@ -35,16 +37,17 @@ def analyze_video(video_path, detector, frame_skip=2, max_frames=500):
             img.save(temp_file.name)
 
             results.append(detector.predict(temp_file.name))
+            analyzed_frames += 1
             temp_file.close()
 
-            if len(results) >= max_frames:
+            if analyzed_frames >= max_frames:
                 break
         frame_count += 1
 
     cap.release()
 
     if not results:
-        return "unknown", 0.0, {"real": 0.0, "fake": 0.0}
+        return "unknown", 0.0, {"real": 0.0, "fake": 0.0}, 0
 
     # Separate confidences by class
     real_conf = [r["confidence"] for r in results if r["prediction"] == "real"]
@@ -56,4 +59,4 @@ def analyze_video(video_path, detector, frame_skip=2, max_frames=500):
     final_label = "real" if avg_real >= avg_fake else "fake"
     confidence = max(avg_real, avg_fake)
 
-    return final_label, confidence, {"real": avg_real, "fake": avg_fake}
+    return final_label, confidence, {"real": avg_real, "fake": avg_fake}, analyzed_frames
