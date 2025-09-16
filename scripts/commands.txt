@@ -1,0 +1,5 @@
+0. Run in venv: pip install fastapi uvicorn streamlit requests pillow opencv-python torch torchvision torchaudio transformers numpy python-multipart
+
+1. Startup fastapi application[From project root]: uvicorn app.api.main:app --reload 
+
+2. Startup UI[In another terminal]: streamlit run frontend/streamlitApp.py
